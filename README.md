@@ -36,10 +36,14 @@ BackEnd будет неполноценным без подключения се
 
 ## 🎥 Архитектура
 ### Диаграмма развертывания:
-![Интерфейс](./TradeBot/presentation/deployment_diagram.png)
+<p align="center">
+  <img src="./TradeBot/presentation/deployment_diagram.png" width="400" alt="Диаграмма развертывания" />
+</p>
 
 ### Диаграмма компонентов:
-![Демонстрация](./TradeBot/presentation/component_diagram.png)
+<p align="center">
+  <img src="./TradeBot/presentation/component_diagram.png" width="400" alt="Диаграмма компонентов" />
+</p>
   
 ## Автор и права
 
