@@ -1,0 +1,32 @@
+# Стандартные файлы и папки Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+*.log
+
+# Виртуальное окружение
+venv/
+env/
+ENV/
+
+# IDE и редакторы
+.vscode/
+.idea/
+
+# OS файлы
+.DS_Store
+Thumbs.db
+
+# Файлы зависимостей, если они генерируются
+poetry.lock
+Pipfile.lock
+
+# Игнорируемые части проекта
+consts/
+utils/
+API/user.py
+Brokers/
+Testing/
+Strategies/
+Adapters/

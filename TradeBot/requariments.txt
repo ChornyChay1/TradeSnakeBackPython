@@ -1,0 +1,11 @@
+fastapi
+sqlalchemy
+databases
+pymysql
+lightweight chart 
+pandas 
+asyncmy
+alembic
+httpx
+xlsxwriter
+jose

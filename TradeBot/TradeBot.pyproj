@@ -1,0 +1,79 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>fa1bf776-61e9-41fe-a909-1cf3e6a711fd</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>TradeBot.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>TradeBot</Name>
+    <RootNamespace>TradeBot</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Adapters\StrategyAdapter.py" />
+    <Compile Include="Adapters\BrokerAdaper.py" />
+    <Compile Include="Adapters\__init__.py" />
+    <Compile Include="API\bots.py" />
+    <Compile Include="API\utils.py" />
+    <Compile Include="API\routes.py" />
+    <Compile Include="API\user.py" />
+    <Compile Include="API\__init__.py" />
+    <Compile Include="Brokers\MetaTrader5.py" />
+    <Compile Include="Brokers\__init__.py" />
+    <Compile Include="Const\const.py" />
+    <Compile Include="Const\__init__.py" />
+    <Compile Include="DB\schemas.py" />
+    <Compile Include="DB\__init__.py" />
+    <Compile Include="Models\bots.py" />
+    <Compile Include="Models\models.py" />
+    <Compile Include="Models\__init__.py" />
+    <Compile Include="Strategies\Trand_RSI_Double_MA.py" />
+    <Compile Include="Strategies\TripleMovingAverageStrategy.py" />
+    <Compile Include="Strategies\MovingAverageStrategy.py" />
+    <Compile Include="Strategies\DoubleMovingAverageStrategy.py" />
+    <Compile Include="Strategies\SimpleStrategy.py" />
+    <Compile Include="Strategies\__init__.py" />
+    <Compile Include="Testing\StrategyTester.py" />
+    <Compile Include="Testing\__init__.py" />
+    <Compile Include="TradeBot.py" />
+    <Compile Include="Utils\email.py" />
+    <Compile Include="Utils\tokens.py" />
+    <Compile Include="Utils\utils.py" />
+    <Compile Include="Utils\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Brokers\" />
+    <Folder Include="DB\" />
+    <Folder Include="API\" />
+    <Folder Include="Adapters\" />
+    <Folder Include="Models\" />
+    <Folder Include="Const\" />
+    <Folder Include="Utils\" />
+    <Folder Include="Testing\" />
+    <Folder Include="Strategies\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".gitignore" />
+    <Content Include="requariments.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>
