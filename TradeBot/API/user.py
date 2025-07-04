@@ -20,7 +20,7 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 @router.post("/", response_model=UserResponse)
 async def create_user(user: UserCreate, db: AsyncSession = Depends(get_db)):
-    # Проверяем, существует ли пользователь
+ 
     result = await db.execute(
         select(User).where(or_(User.email == user.email, User.username == user.username))
     )
@@ -28,10 +28,10 @@ async def create_user(user: UserCreate, db: AsyncSession = Depends(get_db)):
     if existing_user:
         raise HTTPException(status_code=400, detail="User with this email or username already exists")
 
-    # Хешируем пароль
+ 
     password_hash = bcrypt.hashpw(user.password.encode(), bcrypt.gensalt()).decode()
 
-    # Создаём пользователя
+ 
     db_user = User(username=user.username, email=user.email, password_hash=password_hash, money = 0)
     db.add(db_user)
     await db.commit()
@@ -47,8 +47,7 @@ async def create_user(user: UserLogin, db: AsyncSession = Depends(get_db)):
     existing_user = result.scalars().first()
     if not existing_user:
         raise HTTPException(status_code=400, detail="User with this email or username does not exist")
-
-    # Сравниваем введённый пароль с хранимым хэшем
+ 
     if not bcrypt.checkpw(user.password.encode(), existing_user.password_hash.encode()):
         raise HTTPException(status_code=400, detail="Invalid password")
 
@@ -112,7 +111,7 @@ async def add_user_money(
         raise HTTPException(status_code=401, detail="Invalid or expired access token")
 
     try:
-        # Создаем транзакцию
+ 
         transaction = Transactions(
             user_id=user_id,
             money=money_data.amount
@@ -189,7 +188,7 @@ async def get_user_statistics(
     if not user_id:
         return Response(status_code=403)
 
-    # Получаем сумму первой транзакции пользователя (если есть)
+ 
     start_money = 0
     first_transaction_result = await db.execute(
         select(Transactions.money)
@@ -208,7 +207,7 @@ async def get_user_statistics(
     )
     total_transactions = total_transactions_result.scalar_one_or_none() or 0
 
-    # Получаем сумму (symbol_count * current_price) для всех ботов пользователя
+ 
     bots_value_result = await db.execute(
         select(func.sum(Bot.symbol_count * Bot.current_price))
         .where(Bot.user_id == user_id)
@@ -305,7 +304,7 @@ async def get_trade_statistics(
     access_token: str = Cookie(None),  # Получаем токен из куки
     db: AsyncSession = Depends(get_db)  # Подключение к базе данных
 ):
-    # Проверяем токен и получаем user_id
+ 
     user_id = verify_access_token(access_token)
     if not user_id:
         return Response(status_code=403)
@@ -329,7 +328,7 @@ async def get_trade_statistics(
     LIMIT 65;
     """)
 
-    # Выполняем SQL-запрос
+ 
     result = await db.execute(sql_query, {"user_id": user_id})
     rows = result.fetchall()
 

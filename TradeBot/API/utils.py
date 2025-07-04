@@ -139,14 +139,13 @@ async def execute_historical(
     historical_request.strategy_parameters["interval"] = historical_request.interval
     historical_request.strategy_parameters["symbol"] = historical_request.symbol
     historical_request.strategy_parameters["money"] = historical_request.money
-
-    # Проверяем токен доступа
+     
     user_id_from_token = verify_access_token(access_token)
     if not user_id_from_token:
         raise HTTPException(status_code=401, detail="Invalid or expired access token")
     start_money = historical_request.strategy_parameters["money"]
 
-    # Вызываем асинхронный бэктестинг
+ 
     async with httpx.AsyncClient(timeout=httpx.Timeout(500.0)) as client:
         response = await client.post(
             "http://localhost:9090/execute_historical",
@@ -158,7 +157,7 @@ async def execute_historical(
             }
         )
     if response.status_code == 200:
-        # Отладочная печать для просмотра тела ответа
+   
         print(f"Response content: {response.content}")
     
         if response.content:
@@ -195,7 +194,7 @@ async def analyze(request: AnalyzeRequest):
 
 @router.get("/bot_summary")
 async def get_bot_summary(bot_id: int = Query(...), db: AsyncSession = Depends(get_db)):
-    # Текстовый SQL-запрос
+ 
     sql_query = text("""
         WITH trade_data AS (
             SELECT 
@@ -230,14 +229,14 @@ async def get_bot_summary(bot_id: int = Query(...), db: AsyncSession = Depends(g
         FROM trade_data;
     """)
 
-    # Выполнение запроса с параметром bot_id
+ 
     result = await db.execute(sql_query, {"bot_id": bot_id})
     row = result.first()
 
     if not row:
         raise HTTPException(status_code=404, detail="No bot data found for the given bot_id")
 
-    # Формируем ответ
+ 
     bot_summary = {
         "bot_id": row.bot_id,
         "bot_name": row.bot_name,
@@ -274,10 +273,10 @@ async def get_bot_data(bot_id: int, db: AsyncSession):
     if not bot_data:
         raise HTTPException(status_code=404, detail="Bot not found")
 
-    # Парсим strategy_parameters
+ 
     strategy_parameters = json.loads(bot_data["strategy_parameters"])
 
-    # Получаем create_time и вычисляем start_date (за 1 день до создания)
+ 
     create_time = bot_data["create_time"]
     start_date = create_time - timedelta(days=3)  # Вычитаем 1 день
     start_date_unix = int(start_date.timestamp()) * 1000  # В миллисекундах
@@ -285,15 +284,15 @@ async def get_bot_data(bot_id: int, db: AsyncSession):
     # Вычисляем end_date (текущее время в Unix-секундах)
     end_date_unix = int(datetime.now().timestamp()) * 1000  # В миллисекундах
 
-    # Возвращаем данные в нужном формате
+ 
     return {
         "start_date": start_date_unix,
         "end_date": end_date_unix,
         "market_type_name": bot_data["market_type_name"],
         "symbol": bot_data["symbol"],
-        "interval": strategy_parameters.get("interval", "60")  # По умолчанию "60", если interval отсутствует
+        "interval": strategy_parameters.get("interval", "60")  
     }
-# Функция для получения исторических данных с C++ сервера
+ 
 async def get_historical_data(user_id: int, bot_id: int, db: AsyncSession):
     # Получаем данные о боте
     bot_data = await get_bot_data(bot_id, db)
@@ -319,7 +318,7 @@ async def get_historical_data(user_id: int, bot_id: int, db: AsyncSession):
         else:
             raise HTTPException(status_code=response.status_code, detail="Failed to fetch historical data")
 
-# Функция для получения данных о сделках из базы данных
+ 
 async def get_trades_from_db(bot_id: int, db: AsyncSession):
     query = text("""
         SELECT 
@@ -344,7 +343,7 @@ def combine_data(historical_data, trades):
     combined = []
     candles = historical_data["result"]
 
-    # Преобразуем RowMapping в словарь и добавляем поле trade_time_unix
+   
     trades = [
         {
             **trade,  # Копируем все поля из RowMapping
@@ -366,11 +365,11 @@ def combine_data(historical_data, trades):
             "high": candle["high"],
             "low": candle["low"],
             "volume": candle["volume"],
-            "buy": {},  # По умолчанию пустой объект
-            "sell": {}  # По умолчанию пустой объект
+            "buy": {},   
+            "sell": {}   
         }
 
-        # Определяем временной интервал для текущей свечи
+       
         current_time = int(candle["timestamp"])
         next_time = int(candles[i + 1]["timestamp"]) if i < len(candles) - 1 else None
 
@@ -388,7 +387,7 @@ def combine_data(historical_data, trades):
             if next_time and trade_time_unix >= next_time:
                 break
 
-            # Если трейд находится между текущей и следующей свечой, добавляем его
+            
             if trade["type_id"] == 1:  # Buy
                 if trade_entry["buy"]:  # Если уже есть данные в buy
                     trade_entry["buy"]["broker_price"] += float(trade["price_by_broker"])
@@ -412,12 +411,12 @@ def combine_data(historical_data, trades):
                         "quantity": float(trade["quantity"])
                     }
 
-            # Увеличиваем индекс, чтобы перейти к следующему трейду
+            
             trade_index += 1
 
         combined.append(trade_entry)
 
-    # Если остались необработанные трейды, добавляем их в последнюю свечу
+    
     if trade_index < len(trades):
         last_candle = combined[-1]
         for trade in trades[trade_index:]:

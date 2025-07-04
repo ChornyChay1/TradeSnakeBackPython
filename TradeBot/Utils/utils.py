@@ -38,10 +38,10 @@ def calculate_ma(prices: List[float], dates: List[str], period: int) -> Dict[str
     
     ma = {}
 
-    # Проходим по ценам, рассчитывая среднее для каждого окна
+ 
     for i in range(len(prices) - period + 1):
-        window = prices[i:i + period]  # Выбираем окно из цен длиной "period"
-        ma[dates[i + period - 1]] = sum(window) / period  # Среднее значение для текущего окна
+        window = prices[i:i + period]  
+        ma[dates[i + period - 1]] = sum(window) / period 
     
     return ma
 
@@ -52,7 +52,7 @@ def calculate_rsi(prices: List[float], dates: List[str], period: int) -> Dict[st
     gains = []
     losses = []
 
-    # Собираем начальные данные для первых периодов
+ 
     for i in range(1, len(prices)):
         change = prices[i] - prices[i - 1]
         if change >= 0:
@@ -62,13 +62,13 @@ def calculate_rsi(prices: List[float], dates: List[str], period: int) -> Dict[st
             gains.append(0)
             losses.append(-change)
 
-    # Начальные средние значения
+ 
     avg_gain = np.mean(gains[:period])
     avg_loss = np.mean(losses[:period])
 
     rsi = {}
 
-    # Рассчитываем RSI для каждого периода
+ 
     for i in range(period, len(prices)):
         if avg_loss == 0:
             rsi_value = 100
@@ -77,8 +77,7 @@ def calculate_rsi(prices: List[float], dates: List[str], period: int) -> Dict[st
             rsi_value = 100 - (100 / (1 + rs))
 
         rsi[dates[i]] = rsi_value
-
-        # Обновляем средние значения прироста и потерь
+ 
         if i < len(prices) - 1:
             change = prices[i + 1] - prices[i]
             gain = max(0, change)

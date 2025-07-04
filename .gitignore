@@ -1,0 +1,16 @@
+﻿################################################################################
+# Данный GITIGNORE-файл был автоматически создан Microsoft(R) Visual Studio.
+################################################################################
+
+/TradeBot/Brokers/__pycache__
+/TradeBot/Brokers
+/TradeBot/Const
+/TradeBot/Strategies
+/TradeBot/Testing
+/TradeBot/API/__pycache__/user.cpython-311.pyc
+/TradeBot/Adapters
+/TradeBot/Utils/__pycache__
+/TradeBot/Models/__pycache__
+/TradeBot/DB/__pycache__
+/TradeBot/API/__pycache__
+/.vs/TradeBot

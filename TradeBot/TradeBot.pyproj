@@ -26,7 +26,6 @@
     <Compile Include="Adapters\__init__.py" />
     <Compile Include="API\bots.py" />
     <Compile Include="API\utils.py" />
-    <Compile Include="API\routes.py" />
     <Compile Include="API\user.py" />
     <Compile Include="API\__init__.py" />
     <Compile Include="Brokers\MetaTrader5.py" />

@@ -4,7 +4,7 @@ from email.message import EmailMessage
 from Const.const import email_name, email_password
 
 SMTP_SERVER = "smtp.yandex.ru"
-SMTP_PORT = 587  # Если используешь SSL, поменяй на 465
+SMTP_PORT = 587  
 SMTP_USER = email_name
 SMTP_PASSWORD = email_password
 
@@ -72,7 +72,7 @@ async def send_change_password_email(email: str, token: str):
     try:
         await loop.run_in_executor(None, _send_email_sync, msg)
     except Exception as e:
-        print(f"Error for email: {e}")  # Лучше заменить на логирование
+        print(f"Error for email: {e}")   
 
 def _send_email_sync(msg):
     try:
@@ -81,4 +81,4 @@ def _send_email_sync(msg):
             server.login(SMTP_USER, SMTP_PASSWORD)
             server.send_message(msg)
     except smtplib.SMTPException as e:
-        print(f"Error for email: {e}")  # Тут можно записать в лог
+        print(f"Error for email: {e}")   

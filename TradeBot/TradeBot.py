@@ -1,5 +1,5 @@
 import hypercorn
-from API.routes import app    # импорт вашего приложения
+from API.routes import app    
 from hypercorn.config import Config
 from hypercorn.asyncio import serve
 from fastapi.middleware.cors import CORSMiddleware
@@ -22,10 +22,10 @@ app.include_router(bots_router)
 # Настройка CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000","http://localhost:3001"],  # Разрешаем запросы с этого источника
+    allow_origins=["http://localhost:3000","http://localhost:3001"],  
     allow_credentials=True,
-    allow_methods=["*"],  # Разрешаем все HTTP методы (GET, POST, PUT, DELETE и т.д.)
-    allow_headers=["*"],  # Разрешаем все заголовки
+    allow_methods=["*"],  
+    allow_headers=["*"],  
 )
 
 
@@ -33,6 +33,6 @@ if __name__ == "__main__":
 
     asyncio.run(init_db())
     config = Config()
-    config.bind = ["127.0.0.1:8000"]  # Укажите адрес и порт для запуска сервера
+    config.bind = ["127.0.0.1:8000"]  
     asyncio.run(hypercorn.asyncio.serve(app, config))
 
